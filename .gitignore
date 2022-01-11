@@ -9,3 +9,4 @@ Homestead.json
 Homestead.yaml
 /.idea
 /.vscode
+/node_modules
