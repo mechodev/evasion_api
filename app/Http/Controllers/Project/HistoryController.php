@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Project;
 
 use App\Models\History;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\HistoryResource;
+use Illuminate\Support\Facades\Validator;
 
 class HistoryController extends Controller
 {
@@ -14,17 +18,12 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $histories = History::all();
+        return response()->json([
+            'histories' => HistoryResource::collection($histories),
+            'success' => true,
+            'message' => 'Retrieved successfully'
+        ]);
     }
 
     /**
@@ -35,7 +34,41 @@ class HistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'author') {
+            $validatedData =  Validator::make($request->all(), [
+                'title' => ['required', 'string', 'max:255'],
+                'chapter' => ['required', 'integer'],
+                'category_id' => ['required', 'integer'],
+            ]);
+
+            if ($validatedData->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'hasError' => true,
+                    'errors' => $validatedData->errors()->all(),
+                ]);
+            } else {
+
+                $history = History::create([
+                    'title' => $request['title'],
+                    'chapter' => $request['chapter'],
+                    'category_id' => $request['category_id'],
+                    'user_id' => auth()->user()->id,
+                ]);
+
+                return response()->json([
+                    'history' => $history,
+                    'success' => true,
+                    'message' => 'History successfully created'
+                ]);
+            };
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
     /**
@@ -46,19 +79,20 @@ class HistoryController extends Controller
      */
     public function show(History $history)
     {
-        //
+        return response([
+            'history' => new HistoryResource($history),
+            'message' => 'Created successfully'
+        ]);
+
+        /* $history = History::find($history); 
+        return response()->json([
+            'history' => $history,
+            'success' => true,
+            'message' => 'Retrieved successfully'
+        ]);*/
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\History  $history
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(History $history)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +103,35 @@ class HistoryController extends Controller
      */
     public function update(Request $request, History $history)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'author') {
+            $validatedData =  Validator::make($request->all(), [
+                'title' => ['required', 'string', 'max:255'],
+                'chapter' => ['required', 'integer'],
+                'category_id' => ['required', 'integer'],
+            ]);
+
+            if ($validatedData->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'hasError' => true,
+                    'errors' => $validatedData->errors()->all(),
+                ]);
+            } else {
+                $success = $history->update($request->all());
+
+                return response([
+                    'history' => new HistoryResource($history),
+                    'success' => $success,
+                    'message' => 'Update successfully'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
     /**
@@ -80,6 +142,19 @@ class HistoryController extends Controller
      */
     public function destroy(History $history)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'author' ) {
+            $success = $history->delete();
+
+            return response([
+                'success' => $success,
+                'message' => 'Deleted'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 }

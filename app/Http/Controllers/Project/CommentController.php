@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CommentResource;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
@@ -14,17 +17,12 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $comments = Comment::all();
+        return response()->json([
+            'comment' => CommentResource::collection($comments),
+            'success' => true,
+            'message' => 'Retrieved successfully'
+        ]);
     }
 
     /**
@@ -35,7 +33,39 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'reader') {
+            $validatedData =  Validator::make($request->all(), [
+                'content' => ['required', 'string', 'max:255'],
+                'history_id' => ['required', 'integer'],
+            ]);
+
+            if ($validatedData->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'hasError' => true,
+                    'errors' => $validatedData->errors()->all(),
+                ]);
+            } else {
+
+                $comment = Comment::create([
+                    'content' => $request['content'],
+                    'history_id' => $request['history_id'],
+                    'user_id' => auth()->user()->id,
+                ]);
+
+                return response()->json([
+                    'history' => $comment,
+                    'success' => true,
+                    'message' => 'Comment successfully created'
+                ]);
+            };
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
     /**
@@ -46,19 +76,12 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        //
+        return response([
+            'comment' => new CommentResource($comment),
+            'message' => 'Created successfully'
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +92,35 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'reader') {
+            $validatedData =  Validator::make($request->all(), [
+                'content' => ['required', 'string', 'max:255'],
+                'history_id' => ['required', 'integer'],
+            ]);
+
+            if ($validatedData->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'hasError' => true,
+                    'errors' => $validatedData->errors()->all(),
+                ]);
+            } else {
+
+                $success = $comment->update($request->all());
+
+                return response([
+                    'comment' => new CommentResource($comment),
+                    'success' => $success,
+                    'message' => 'Update successfully'
+                ]);
+            };
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
     /**
@@ -80,6 +131,19 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'reader') {
+            $success = $comment->delete();
+
+            return response([
+                'success' => $success,
+                'message' => 'Deleted successfully'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 }

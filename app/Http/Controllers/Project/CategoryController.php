@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CategorieResource;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -14,18 +18,23 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'admin') {
+
+            $categories = Category::all();
+            return response()->json([
+                'categories' => CategorieResource::collection($categories),
+                'success' => true,
+                'message' => 'Retrieved successfully'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +44,37 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'admin') {
+
+            $validatedData =  Validator::make($request->all(), [
+                'title' => ['required', 'string'],
+            ]);
+
+            if ($validatedData->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'hasError' => true,
+                    'errors' => $validatedData->errors()->all(),
+                ]);
+            } else {
+
+                $category = Category::create([
+                    'title' => $request['title']
+                ]);
+
+                return response()->json([
+                    'category' => $category,
+                    'success' => true,
+                    'message' => 'Category successfully created'
+                ]);
+            };
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
     /**
@@ -46,19 +85,20 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'admin') {
+            return response([
+                'category' => new CategorieResource($category),
+                'message' => 'Created successfully'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +109,34 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'admin') {
+
+            $validatedData =  Validator::make($request->all(), [
+                'title' => ['required', 'string'],
+            ]);
+
+            if ($validatedData->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'hasError' => true,
+                    'errors' => $validatedData->errors()->all(),
+                ]);
+            } else {
+                $success = $category->update($request->all());
+
+                return response([
+                    'chapter' => $category,
+                    'success' => $success,
+                    'message' => 'Update successfully'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 
     /**
@@ -80,6 +147,19 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $role = Auth::user()->role;
+        if ($role == 'admin') {
+            $success = $category->delete();
+
+            return response([
+                'success' => $success,
+                'message' => 'Deleted'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission denied'
+            ]);
+        }
     }
 }

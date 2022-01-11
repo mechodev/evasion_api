@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Project;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -17,23 +20,12 @@ class UserController extends Controller
     {
         $users = User::all();
         return response()->json([
-            'users' => $users,
+            'users' => UserResource::collection($users),
             'success' => true,
             'message' => 'Retrieved successfully'
         ]);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -43,19 +35,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return response()->json([
+            'user' => new UserResource($user),
+            'success' => true,
+            'message' => 'Retrieved successfully'
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -66,7 +52,29 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validatedData =  Validator::make($request->all(), [
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                'success' => false,
+                'hasError' => true,
+                'errors' => $validatedData->errors()->all(),
+            ]);
+        } else {
+            $success = $user->update($request->all());
+
+            return response([
+                'history' => new UserResource($user),
+                'success' => $success,
+                'message' => 'Update successfully'
+            ]);
+        }
     }
 
     /**
@@ -77,6 +85,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $success = $user->delete();
+
+        return response([
+            'success' => $success,
+            'message' => 'Deleted'
+        ]);
     }
 }
