@@ -38,6 +38,7 @@ class HistoryController extends Controller
         if ($role == 'author') {
             $validatedData =  Validator::make($request->all(), [
                 'title' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
                 'chapter' => ['required', 'integer'],
                 'category_id' => ['required', 'integer'],
             ]);
@@ -52,6 +53,7 @@ class HistoryController extends Controller
 
                 $history = History::create([
                     'title' => $request['title'],
+                    'description' => $request['description'],
                     'chapter' => $request['chapter'],
                     'category_id' => $request['category_id'],
                     'user_id' => auth()->user()->id,
@@ -81,7 +83,7 @@ class HistoryController extends Controller
     {
         return response([
             'history' => new HistoryResource($history),
-            'message' => 'Created successfully'
+            'message' => 'Retrieved successfully'
         ]);
 
         /* $history = History::find($history); 
@@ -107,6 +109,7 @@ class HistoryController extends Controller
         if ($role == 'author') {
             $validatedData =  Validator::make($request->all(), [
                 'title' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
                 'chapter' => ['required', 'integer'],
                 'category_id' => ['required', 'integer'],
             ]);
@@ -143,7 +146,7 @@ class HistoryController extends Controller
     public function destroy(History $history)
     {
         $role = Auth::user()->role;
-        if ($role == 'author' ) {
+        if ($role == 'author') {
             $success = $history->delete();
 
             return response([

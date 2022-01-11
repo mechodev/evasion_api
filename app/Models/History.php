@@ -17,6 +17,7 @@ class History extends Model
 
     protected $fillable = [
         'title',
+        'description',
         'validated',
         'Appreciation',
         'chapter',

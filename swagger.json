@@ -1,0 +1,622 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "EVASION API",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "host": "http:\/\/localhost",
+    "basePath": "\/",
+    "paths": {
+        "\/api\/authentication\/register": {
+            "post": {
+                "summary": " Register a newly created user",
+                "description": " take this parameters: firstname,lastname,role,,email,password",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/authentication\/login": {
+            "post": {
+                "summary": "Connect an user to his account",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/users": {
+            "get": {
+                "summary": "Display a list users.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/user\/{user}": {
+            "get": {
+                "summary": "Display a specified user.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user",
+                        "type": "integer",
+                        "required": true,
+                        "description": " the id of the concerned user"
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update a specified user in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned user"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove a specified user from storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned user"
+                    }
+                ]
+            }
+        },
+        "\/api\/histories": {
+            "get": {
+                "summary": "Display a list of history.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/history": {
+            "post": {
+                "summary": "Store a newly created history in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/history\/{history}": {
+            "get": {
+                "summary": "Display a specified history.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "history",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned history"
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update a specified history in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "history",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned history"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove a specified history from storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "history",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned history"
+                    }
+                ]
+            }
+        },
+        "\/api\/history\/{history}\/chapters": {
+            "get": {
+                "summary": "Display all the chapters of an history.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "history",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the history for which we'll display the chapters"
+                    }
+                ]
+            }
+        },
+        "\/api\/chapter": {
+            "post": {
+                "summary": "Store a newly created resource in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/chapter\/{chapter}": {
+            "get": {
+                "summary": "Display a specified chapter.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chapter",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned chapter"
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update a specified chapter in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chapter",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned chapter"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove a specified chapter from storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chapter",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned chapter"
+                    }
+                ]
+            }
+        },
+        "\/api\/categories": {
+            "get": {
+                "summary": "Display a list of categories.",
+                "description": " Only admin can access to it",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/category": {
+            "post": {
+                "summary": "Store a newly created category in storage.",
+                "description": "Only admin can access to it",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/category\/{category}": {
+            "get": {
+                "summary": "Display a specified category.",
+                "description": "Only admin can access to it",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "category",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned category"
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update a specified category in storage.",
+                "description": "Only admin can access to it",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "category",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned category"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove a specified category from storage.",
+                "description": "Only admin can access to it",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "category",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned category"
+                    }
+                ]
+            }
+        },
+        "\/api\/history\/{history}\/comments": {
+            "get": {
+                "summary": "Display all comments of a given history.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "history",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the history for which we'll display the comments"
+                    }
+                ]
+            }
+        },
+        "\/api\/comment": {
+            "post": {
+                "summary": "Store a newly created comment in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/comment\/{comment}": {
+            "get": {
+                "summary": "Display a specified comment.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "comment",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned comment"
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update a specified comment in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "comment",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned comment"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove the specified resource from storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "comment",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned comment"
+                    }
+                ]
+            }
+        },
+        "\/api\/history\/{history}\/likes": {
+            "get": {
+                "summary": "Display all likes of a given history.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "history",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the history for which we'll display the likes"
+                    }
+                ]
+            }
+        },
+        "\/api\/like": {
+            "post": {
+                "summary": "Store a newly created like in storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/like\/{like}": {
+            "get": {
+                "summary": "Display the specified like.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "like",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned like"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove the specified like from storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "like",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned like"
+                    }
+                ]
+            }
+        },
+        "\/api\/forum\/messages": {
+            "get": {
+                "summary": "Display a list of messages in forum.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/forum\/message": {
+            "post": {
+                "summary": "Store a newly created message in forum.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "\/api\/forum\/message\/{community}": {
+            "get": {
+                "summary": "Display a specified message.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "community",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned message"
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Update the specified message in forum.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "community",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned message"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Remove the specified resource from storage.",
+                "description": "",
+                "deprecated": false,
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "community",
+                        "type": "integer",
+                        "required": true,
+                        "description": "the id of the concerned message"
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "OAuth2": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "authorizationUrl": "http:\/\/localhost\/oauth\/authorize",
+            "tokenUrl": "http:\/\/localhost\/oauth\/token",
+            "scopes": []
+        }
+    }
+}

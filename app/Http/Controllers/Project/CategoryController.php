@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Project;
 
 use App\Models\History;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\CategorieResource;
 use Illuminate\Support\Facades\Validator;
@@ -89,7 +90,7 @@ class CategoryController extends Controller
         if ($role == 'admin') {
             return response([
                 'category' => new CategorieResource($category),
-                'message' => 'Created successfully'
+                'message' => 'Retrieved successfully'
             ]);
         } else {
             return response()->json([

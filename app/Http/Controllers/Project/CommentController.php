@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Project;
 
 use App\Models\Comment;
+use App\Models\History;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\CommentResource;
 use Illuminate\Support\Facades\Validator;
@@ -12,12 +14,12 @@ class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     *@return \Illuminate\Http\Response
+     * @param  \App\Models\History 
      */
-    public function index()
+    public function index(History $history)
     {
-        $comments = Comment::all();
+        $comments = $history->chapters()->get();
         return response()->json([
             'comment' => CommentResource::collection($comments),
             'success' => true,
@@ -36,7 +38,7 @@ class CommentController extends Controller
         $role = Auth::user()->role;
         if ($role == 'reader') {
             $validatedData =  Validator::make($request->all(), [
-                'content' => ['required', 'string', 'max:255'],
+                'content' => ['required', 'string'],
                 'history_id' => ['required', 'integer'],
             ]);
 
@@ -78,7 +80,7 @@ class CommentController extends Controller
     {
         return response([
             'comment' => new CommentResource($comment),
-            'message' => 'Created successfully'
+            'message' => 'Retrieved successfully'
         ]);
     }
 
